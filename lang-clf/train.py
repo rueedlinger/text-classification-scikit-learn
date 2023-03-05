@@ -89,10 +89,13 @@ def evaluate_train_set(classifier, x_train, y_train):
     for scoring in scoring_types:
         scores = model_selection.cross_val_score(classifier, X=x_train, y=y_train,
                                                  cv=folds, scoring=scoring)
-        print(scoring)
-        print('scores: %s' % scores)
-        print(scoring + ': %0.6f (+/- %0.4f)' % (scores.mean(), scores.std() * 2))
-        print()
+        sigma_2 = scores.std() * 2
+        score_range = [round(scores.mean() - sigma_2, 4), round(scores.mean() + sigma_2, 4)]
+
+        print(f"{scoring} scores: {scores}")
+        print(f"{scoring} mean score: {scores.mean():0.4f}")
+        print(f"{scoring} std {scores.std():0.4f}")
+        print(f"{scoring} score range (+/- 2 * std): {score_range}")
 
 
 def evaluate_test_set(classifier: Pipeline, x_test, y_test):
@@ -107,12 +110,10 @@ def show_top10(pipeline, n=10):
     print(f"top {n} features per label")
     for i, label in enumerate(pipeline['clf'].classes_):
         top_features = np.argsort(pipeline['clf'].feature_log_prob_[i])[-n:]
-        #print(f"{label}: {[x.encode('unicode_escape') for x in feature_names[top_features]]}")
+        # print(f"{label}: {[x.encode('unicode_escape') for x in feature_names[top_features]]}")
         print(f"{label}: {feature_names[top_features]}")
 
-    print(f"count features: {len(pipeline['vect'].vocabulary_)}")
-
-
+    print(f"number of features: {len(pipeline['vect'].vocabulary_)}")
 
 
 def save_model(model):
