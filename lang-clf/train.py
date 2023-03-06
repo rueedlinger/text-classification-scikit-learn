@@ -3,12 +3,13 @@ import os
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.pipeline import Pipeline
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.naive_bayes import MultinomialNB, ComplementNB
 from sklearn import metrics
 from sklearn import model_selection
 import time
 import pickle
+import re
 
 
 class DataModel:
@@ -31,7 +32,7 @@ def prepare(data):
             with open(sample_file, 'r') as reader:
                 lines = reader.read().splitlines()
                 for line in lines:
-                    txt_corpus.sample_texts.append(line)
+                    txt_corpus.sample_texts.append(no_number_preprocessor(line))
                     txt_corpus.labels.append(label)
 
                 if label in stats_label:
@@ -46,6 +47,13 @@ def prepare(data):
     print('samples: ', len(txt_corpus.sample_texts))
 
     return txt_corpus
+
+
+def no_number_preprocessor(tokens):
+    r = re.sub('(\d)+', '', tokens)
+    # This alternative just removes numbers:
+    # r = re.sub('(\d)+', 'NUM', tokens.lower())
+    return r
 
 
 def stratify_split_train_test(data_model: DataModel, test_size=0.40):
@@ -69,12 +77,18 @@ def train(model: Pipeline, x_train, y_train):
 
 
 def create_model():
-    pipeline = Pipeline([('vect',
-                          TfidfVectorizer(analyzer='word',
-                                          ngram_range=(1, 5),
-                                          min_df=1,
-                                          lowercase=True)),
-                         ('clf', MultinomialNB(alpha=1.0))])
+    vec_word = TfidfVectorizer(analyzer='word',
+                               ngram_range=(1, 5),
+                               min_df=5,
+                               lowercase=True)
+
+    vec_char_wb = TfidfVectorizer(analyzer='char_wb',
+                                  ngram_range=(1, 5),
+                                  min_df=5,
+                                  lowercase=True)
+
+    union = FeatureUnion([("vec_word", vec_word), ("vec_char_wb", vec_char_wb)])
+    pipeline = Pipeline([('vect', union), ('clf', MultinomialNB(alpha=1.0))])
 
     print("create model definition", pipeline)
     return pipeline
@@ -113,7 +127,7 @@ def show_top10(pipeline, n=10):
         # print(f"{label}: {[x.encode('unicode_escape') for x in feature_names[top_features]]}")
         print(f"{label}: {feature_names[top_features]}")
 
-    print(f"number of features: {len(pipeline['vect'].vocabulary_)}")
+    print(f"number of features: {len(pipeline['vect'].get_feature_names_out())}")
 
 
 def save_model(model):

@@ -41,20 +41,6 @@ def predict(model):
     print(f"prediction toke {end - start:0.4f} seconds")
 
 
-def show_features(pipeline):
-    print(pipeline)
-    for f in pipeline['vect'].vocabulary_:
-        print(f)
-
-    """
-    feature_names = np.asarray(pipeline['vect'].get_feature_names_out())
-    print(f"top {n} features per label")
-    for i, label in enumerate(pipeline['clf'].classes_):
-        top_features = np.argsort(pipeline['clf'].feature_log_prob_[i])[-n:]
-        #print(f"{label}: {[x.encode('unicode_escape') for x in feature_names[top_features]]}")
-        print(f"{label}: {feature_names[top_features]}")
-    """
-
 if __name__ == "__main__":
     model = load_model()
-    show_features(model)
+    predict(model)
