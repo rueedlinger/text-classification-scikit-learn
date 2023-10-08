@@ -1,12 +1,19 @@
 DATA := data/
 TRAIN := model.pkl
-
+LANGUAGES := languages.csv
+LANG := 
 
 .PHONY: all
 all: prepare
 
+
+$(LANGUAGES):
+	for lang in 1 2 3 4 ; do \
+        echo $$number ; \
+    done
+
 .PHONY: prepare
-prepare: $(DATA)
+prepare: $(LANGUAGES) $(DATA)
 
 $(DATA):
 	python lib/data.py
@@ -21,3 +28,4 @@ $(train): prepare
 clean:
 	rm -rf $(DATA)
 	rm -f $(TRAIN)
+	rm -f $(LANGUAGES)

@@ -132,3 +132,5 @@ dmypy.json
 
 *.pkl
 data/**/*.txt
+
+.DS_Store
