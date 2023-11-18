@@ -43,7 +43,6 @@ def download(lang_file, out_dir, no_samples):
 
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d")
-    min_len = 30
 
     for i, lang in enumerate(langs):
         print(f"loading language data: {lang} ({i + 1}/{len(langs)})")
@@ -57,12 +56,9 @@ def download(lang_file, out_dir, no_samples):
                 if 'extract' in values:
                     txt = values['extract']
                     txt = txt.strip().replace('\n', ' ')
-                    if len(txt) >= min_len:
-                        samples.append(txt)
-                    else:
-                        print(f"ignore txt sample {lang} ({i+1}/{no_samples}) -> len {len(txt)} < min ({min_len})")
+                    samples.append(txt)
             else:
-                print(f"Could not load txt sample ${lang} ({i+1}/{len(no_samples)}) -> code {resp.status}")
+                print(f"Could not load txt sample {lang} ({i+1}/{no_samples}) -> code {resp.status}")
 
         filename = os.path.join(out_dir, lang, f"{lang}_{timestamp}.txt")
         os.makedirs(os.path.dirname(filename), exist_ok=True)

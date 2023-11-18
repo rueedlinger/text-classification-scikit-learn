@@ -19,7 +19,7 @@ usage: data.py [-h] [--out OUT] [--file FILE] [--samples SAMPLES]
 Download some text samples in different languages based on iso-639-1 code (see [iso-639-1.csv](iso-639-1.csv)) from wikipedia subdomains.
 
 ```bash
-python lib/data.py --out data --samples 10 --file iso-639-1.csv
+python lib/data.py --out data --samples 50 --file iso-639-1.csv
 ```
 
 ## Train the Model
