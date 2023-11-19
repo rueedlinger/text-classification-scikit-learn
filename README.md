@@ -29,7 +29,7 @@ pip install -r requirements.txt
 usage: data.py [-h] [--out OUT] [--file FILE] [--samples SAMPLES]
 ```
 
-Download some text samples in different languages based on iso-639-1 code (see [iso-639-1.csv](iso-639-1.csv)) from 
+Download some random text samples in different languages based on iso-639-1 code (see [iso-639-1.csv](iso-639-1.csv)) from 
 wikipedia subdomains. The text samples are stored in the [data](data) directory.
 
 ```bash
