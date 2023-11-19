@@ -90,64 +90,65 @@ train size (x, y):  359 359
 test size (x, y):  240 240
 create model definition Pipeline(steps=[('vect',
                  FeatureUnion(transformer_list=[('vec_word',
-                                                 TfidfVectorizer(min_df=5,
-                                                                 ngram_range=(1,
+                                                 TfidfVectorizer(ngram_range=(1,
                                                                               2))),
                                                 ('vec_char_wb',
                                                  TfidfVectorizer(analyzer='char_wb',
-                                                                 max_df=50,
-                                                                 min_df=5,
+                                                                 ngram_range=(1,
+                                                                              2))),
+                                                ('vec_char',
+                                                 TfidfVectorizer(analyzer='char',
                                                                  ngram_range=(1,
                                                                               2)))])),
                 ('clf', MultinomialNB())])
 evaluate train set with ['f1_weighted', 'accuracy'] and 5 folds
-f1_weighted scores: [1.       1.       1.       1.       0.985891]
-f1_weighted mean score: 0.9972
-f1_weighted std 0.0056
-f1_weighted score range (+/- 2 * std): [0.9859, 1.0085]
-accuracy scores: [1.         1.         1.         1.         0.98591549]
-accuracy mean score: 0.9972
-accuracy std 0.0056
-accuracy score range (+/- 2 * std): [0.9859, 1.0085]
+f1_weighted scores: [1.         1.         1.         0.97268673 0.97180649]
+f1_weighted mean score: 0.9889
+f1_weighted std 0.0136
+f1_weighted score range (+/- 2 * std): [0.9617, 1.0161]
+accuracy scores: [1.         1.         1.         0.97222222 0.97183099]
+accuracy mean score: 0.9888
+accuracy std 0.0137
+accuracy score range (+/- 2 * std): [0.9614, 1.0162]
 start fitting model
-model fitting took 0.0574 seconds
+model fitting took 0.1158 seconds
 top 10 features per label
-de: ['vec_word__eine' 'vec_word__in' 'vec_word__war' 'vec_word__die'
- 'vec_word__im' 'vec_word__ist ein' 'vec_word__und' 'vec_word__ein'
- 'vec_word__ist' 'vec_word__der']
-en: ['vec_word__by' 'vec_char_wb__sh' 'vec_word__to' 'vec_word__in the'
- 'vec_word__was' 'vec_word__and' 'vec_word__is' 'vec_word__in'
- 'vec_word__of' 'vec_word__the']
-es: ['vec_word__del' 'vec_char_wb__ón' 'vec_word__el' 'vec_word__una'
- 'vec_char_wb__ y' 'vec_word__es' 'vec_char_wb__ó' 'vec_word__en'
- 'vec_word__la' 'vec_word__de']
-fr: ['vec_char_wb__à' 'vec_char_wb__é ' 'vec_word__un' 'vec_word__une'
- 'vec_word__est un' 'vec_word__et' 'vec_word__la' 'vec_word__le'
- 'vec_word__est' 'vec_word__de']
-ja: ['vec_char_wb__で' 'vec_char_wb__・' 'vec_char_wb__県' 'vec_char_wb__ある'
- 'vec_char_wb__に' 'vec_char_wb__あ' 'vec_char_wb__ン' 'vec_char_wb__ー'
- 'vec_char_wb__る' 'vec_char_wb__の']
-zh: ['vec_char_wb__省' 'vec_char_wb__西' 'vec_char_wb__部' 'vec_char_wb__科'
- 'vec_char_wb__於' 'vec_char_wb__的一' 'vec_char_wb__属' 'vec_char_wb__于'
- 'vec_char_wb__是' 'vec_word__英語']
-number of features: 1064
+de: ['vec_char_wb__r' 'vec_char_wb__n' 'vec_char__r' 'vec_char_wb__i'
+ 'vec_char__n' 'vec_char__i' 'vec_char_wb__e' 'vec_char__ ' 'vec_char__e'
+ 'vec_char_wb__ ']
+en: ['vec_char_wb__i' 'vec_char__n' 'vec_char__t' 'vec_char_wb__a'
+ 'vec_char__i' 'vec_char__a' 'vec_char_wb__e' 'vec_char__e' 'vec_char__ '
+ 'vec_char_wb__ ']
+es: ['vec_word__de' 'vec_char__n' 'vec_char__i' 'vec_char__o' 'vec_char_wb__a'
+ 'vec_char_wb__e' 'vec_char__a' 'vec_char__e' 'vec_char__ '
+ 'vec_char_wb__ ']
+fr: ['vec_char__e ' 'vec_char__s' 'vec_char__i' 'vec_char_wb__a' 'vec_char__n'
+ 'vec_char__a' 'vec_char_wb__e' 'vec_char__e' 'vec_char__ '
+ 'vec_char_wb__ ']
+ja: ['vec_char_wb__る' 'vec_char__る' 'vec_char_wb__。' 'vec_char__。'
+ 'vec_char_wb__、' 'vec_char__、' 'vec_char_wb__は' 'vec_char__は'
+ 'vec_char_wb__の' 'vec_char__の']
+zh: ['vec_char__一' 'vec_char_wb__是' 'vec_char__是' 'vec_char_wb__ '
+ 'vec_char_wb__。' 'vec_char__。' 'vec_char_wb__的' 'vec_char__的'
+ 'vec_char_wb__，' 'vec_char__，']
+number of features: 30623
               precision    recall  f1-score   support
 
           de     1.0000    1.0000    1.0000        40
-          en     1.0000    1.0000    1.0000        40
+          en     0.9524    1.0000    0.9756        40
           es     1.0000    1.0000    1.0000        40
           fr     1.0000    1.0000    1.0000        40
-          ja     0.9756    1.0000    0.9877        40
-          zh     1.0000    0.9750    0.9873        40
+          ja     1.0000    1.0000    1.0000        40
+          zh     1.0000    0.9500    0.9744        40
 
-    accuracy                         0.9958       240
-   macro avg     0.9959    0.9958    0.9958       240
-weighted avg     0.9959    0.9958    0.9958       240
+    accuracy                         0.9917       240
+   macro avg     0.9921    0.9917    0.9917       240
+weighted avg     0.9921    0.9917    0.9917       240
 
 saving model
-model size (Bytes): 414539
-model size (KiB): 404.82
-model size (MiB): 0.40
+model size (Bytes): 3888074
+model size (KiB): 3796.95
+model size (MiB): 3.71
 model size (GiB): 0.00
 ```
 
