@@ -78,12 +78,13 @@ def train(model: Pipeline, x_train, y_train):
 
 def create_model():
     vec_word = TfidfVectorizer(analyzer='word',
-                               ngram_range=(1, 5),
+                               ngram_range=(1, 2),
                                min_df=5,
                                lowercase=True)
 
     vec_char_wb = TfidfVectorizer(analyzer='char_wb',
-                                  ngram_range=(1, 5),
+                                  ngram_range=(1, 2),
+                                  max_df=50,
                                   min_df=5,
                                   lowercase=True)
 

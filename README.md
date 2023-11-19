@@ -33,7 +33,7 @@ Download some random text samples in different languages based on iso-639-1 code
 wikipedia subdomains. The text samples are stored in the [data](data) directory.
 
 ```bash
-python lib/data.py --out data --samples 50 --file iso-639-1.csv
+python lib/data.py --out data --samples 100 --file iso-639-1.csv
 ```
 
 The output might look like this:
@@ -80,24 +80,25 @@ The output might look like this:
 ```
 added ja samples (100)
 added zh samples (100)
-added de samples (98)
+added de samples (99)
 added fr samples (100)
 added es samples (100)
 added en samples (100)
 labels:  6
-samples:  598
-train size (x, y):  358 358
+samples:  599
+train size (x, y):  359 359
 test size (x, y):  240 240
 create model definition Pipeline(steps=[('vect',
                  FeatureUnion(transformer_list=[('vec_word',
                                                  TfidfVectorizer(min_df=5,
                                                                  ngram_range=(1,
-                                                                              5))),
+                                                                              2))),
                                                 ('vec_char_wb',
                                                  TfidfVectorizer(analyzer='char_wb',
+                                                                 max_df=50,
                                                                  min_df=5,
                                                                  ngram_range=(1,
-                                                                              5)))])),
+                                                                              2)))])),
                 ('clf', MultinomialNB())])
 evaluate train set with ['f1_weighted', 'accuracy'] and 5 folds
 f1_weighted scores: [1.       1.       1.       1.       0.985891]
@@ -109,50 +110,50 @@ accuracy mean score: 0.9972
 accuracy std 0.0056
 accuracy score range (+/- 2 * std): [0.9859, 1.0085]
 start fitting model
-model fitting took 0.1480 seconds
+model fitting took 0.0574 seconds
 top 10 features per label
-de: ['vec_char_wb__r' 'vec_word__im' 'vec_char_wb__n' 'vec_char_wb__i'
- 'vec_word__ein' 'vec_word__und' 'vec_word__ist' 'vec_word__der'
- 'vec_char_wb__e' 'vec_char_wb__ ']
-en: ['vec_char_wb__n' 'vec_char_wb__i' 'vec_char_wb__a' 'vec_word__in'
- 'vec_word__and' 'vec_char_wb__e' 'vec_word__of' 'vec_word__is'
- 'vec_word__the' 'vec_char_wb__ ']
-es: ['vec_char_wb__n' 'vec_char_wb__o' 'vec_word__la' 'vec_word__el'
- 'vec_word__es' 'vec_word__en' 'vec_char_wb__a' 'vec_char_wb__e'
- 'vec_word__de' 'vec_char_wb__ ']
-fr: ['vec_char_wb__t' 'vec_char_wb__n' 'vec_char_wb__a' 'vec_word__une'
- 'vec_word__la' 'vec_word__le' 'vec_word__de' 'vec_word__est'
- 'vec_char_wb__e' 'vec_char_wb__ ']
-ja: ['vec_char_wb__あ' 'vec_char_wb__ン' 'vec_char_wb__ー' 'vec_char_wb__に'
- 'vec_char_wb__る' 'vec_char_wb__。' 'vec_char_wb__、' 'vec_char_wb__は'
- 'vec_char_wb__ ' 'vec_char_wb__の']
-zh: ['vec_char_wb__市' 'vec_char_wb__。 ' 'vec_char_wb__一' 'vec_char_wb__是'
- 'vec_char_wb__ ' 'vec_word__平方公里' 'vec_word__英語' 'vec_char_wb__。'
- 'vec_char_wb__的' 'vec_char_wb__，']
-number of features: 4992
+de: ['vec_word__eine' 'vec_word__in' 'vec_word__war' 'vec_word__die'
+ 'vec_word__im' 'vec_word__ist ein' 'vec_word__und' 'vec_word__ein'
+ 'vec_word__ist' 'vec_word__der']
+en: ['vec_word__by' 'vec_char_wb__sh' 'vec_word__to' 'vec_word__in the'
+ 'vec_word__was' 'vec_word__and' 'vec_word__is' 'vec_word__in'
+ 'vec_word__of' 'vec_word__the']
+es: ['vec_word__del' 'vec_char_wb__ón' 'vec_word__el' 'vec_word__una'
+ 'vec_char_wb__ y' 'vec_word__es' 'vec_char_wb__ó' 'vec_word__en'
+ 'vec_word__la' 'vec_word__de']
+fr: ['vec_char_wb__à' 'vec_char_wb__é ' 'vec_word__un' 'vec_word__une'
+ 'vec_word__est un' 'vec_word__et' 'vec_word__la' 'vec_word__le'
+ 'vec_word__est' 'vec_word__de']
+ja: ['vec_char_wb__で' 'vec_char_wb__・' 'vec_char_wb__県' 'vec_char_wb__ある'
+ 'vec_char_wb__に' 'vec_char_wb__あ' 'vec_char_wb__ン' 'vec_char_wb__ー'
+ 'vec_char_wb__る' 'vec_char_wb__の']
+zh: ['vec_char_wb__省' 'vec_char_wb__西' 'vec_char_wb__部' 'vec_char_wb__科'
+ 'vec_char_wb__於' 'vec_char_wb__的一' 'vec_char_wb__属' 'vec_char_wb__于'
+ 'vec_char_wb__是' 'vec_word__英語']
+number of features: 1064
               precision    recall  f1-score   support
 
           de     1.0000    1.0000    1.0000        40
-          en     0.9524    1.0000    0.9756        40
-          es     1.0000    0.9750    0.9873        40
-          fr     1.0000    0.9750    0.9873        40
-          ja     1.0000    1.0000    1.0000        40
-          zh     1.0000    1.0000    1.0000        40
+          en     1.0000    1.0000    1.0000        40
+          es     1.0000    1.0000    1.0000        40
+          fr     1.0000    1.0000    1.0000        40
+          ja     0.9756    1.0000    0.9877        40
+          zh     1.0000    0.9750    0.9873        40
 
-    accuracy                         0.9917       240
-   macro avg     0.9921    0.9917    0.9917       240
-weighted avg     0.9921    0.9917    0.9917       240
+    accuracy                         0.9958       240
+   macro avg     0.9959    0.9958    0.9958       240
+weighted avg     0.9959    0.9958    0.9958       240
 
 saving model
-model size (Bytes): 2308413
-model size (KiB): 2254.31
-model size (MiB): 2.20
+model size (Bytes): 414539
+model size (KiB): 404.82
+model size (MiB): 0.40
 model size (GiB): 0.00
 ```
 
 ## Use the Model
 
-In the last setp we can try out our model.
+In the last step we can try out our model.
 
 ```bash
 python lib/predict.py
