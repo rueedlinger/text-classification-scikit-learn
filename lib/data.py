@@ -1,9 +1,10 @@
 import argparse
-import requests
 from datetime import datetime
 import os
-from urllib3 import PoolManager
+from urllib3 import PoolManager, Retry
 import json
+
+from urllib3.exceptions import MaxRetryError
 
 
 def get_languages_from_file(lang_file):
@@ -20,7 +21,10 @@ def download(lang_file, out_dir, no_samples):
     print(f"samples: {no_samples}")
     langs = []
 
-    http = PoolManager(maxsize=50, block=True)
+    retries = Retry(connect=5, read=2, redirect=5, status=2)
+    http = PoolManager(maxsize=50, block=True, retries=retries)
+
+
 
     with open(lang_file, 'r') as f:
         lines = f.read().splitlines()
@@ -38,8 +42,8 @@ def download(lang_file, out_dir, no_samples):
                     langs.append(lang)
                 else:
                     print(f"ignoring language {lang} -> extract not found in response!")
-            except requests.exceptions.ConnectionError:
-                print(f"ignoring language {lang} -> WIKIPEDIA subdomain not found!")
+            except MaxRetryError as ex:
+                print(f"ignoring language {lang} -> {ex.reason}")
 
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d")
@@ -48,6 +52,7 @@ def download(lang_file, out_dir, no_samples):
         print(f"loading language data: {lang} ({i + 1}/{len(langs)})")
         samples = []
         url = f"https://{lang}.wikipedia.org/api/rest_v1/page/random/summary"
+
         for i in range(0, no_samples):
             resp = http.request('GET', url)
             if resp.status == 200:
@@ -58,7 +63,8 @@ def download(lang_file, out_dir, no_samples):
                     txt = txt.strip().replace('\n', ' ')
                     samples.append(txt)
             else:
-                print(f"Could not load txt sample {lang} ({i+1}/{no_samples}) -> code {resp.status}")
+                print(f"Could not load txt sample {lang} ({i+1}/{no_samples}) "
+                      f"-> http error {resp.status} ({resp.reason})")
 
         filename = os.path.join(out_dir, lang, f"{lang}_{timestamp}.txt")
         os.makedirs(os.path.dirname(filename), exist_ok=True)

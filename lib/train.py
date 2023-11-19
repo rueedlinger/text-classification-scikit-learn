@@ -72,7 +72,7 @@ def train(model: Pipeline, x_train, y_train):
     start = time.perf_counter()
     text_clf = model.fit(x_train, y_train)
     end = time.perf_counter()
-    print(f"model fitting toke {end - start:0.4f} seconds")
+    print(f"model fitting took {end - start:0.4f} seconds")
     return text_clf
 
 
