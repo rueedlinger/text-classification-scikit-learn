@@ -79,16 +79,17 @@ def train(model: Pipeline, x_train, y_train):
 def create_model():
     vec_word = TfidfVectorizer(analyzer='word',
                                ngram_range=(1, 2),
-                               min_df=5,
                                lowercase=True)
 
     vec_char_wb = TfidfVectorizer(analyzer='char_wb',
                                   ngram_range=(1, 2),
-                                  max_df=50,
-                                  min_df=5,
                                   lowercase=True)
 
-    union = FeatureUnion([("vec_word", vec_word), ("vec_char_wb", vec_char_wb)])
+    vec_char = TfidfVectorizer(analyzer='char',
+                               ngram_range=(1, 2),
+                               lowercase=True)
+
+    union = FeatureUnion([("vec_word", vec_word), ("vec_char_wb", vec_char_wb), ("vec_char", vec_char)])
     pipeline = Pipeline([('vect', union), ('clf', MultinomialNB(alpha=1.0))])
 
     print("create model definition", pipeline)
