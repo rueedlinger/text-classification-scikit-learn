@@ -36,7 +36,7 @@ wikipedia subdomains. The text samples are stored in the [data](data) directory.
 python lib/data.py --out data --samples 50 --file iso-639-1.csv
 ```
 
-The output might look like something like this:
+The output might look like this:
 
 ```
 language file: iso-639-1.csv
@@ -73,8 +73,7 @@ python lib/train.py --data data
 ```
 This step will split the text samples in a train and test set.
 The model optimization is done using the train set with k-fold cross validation.
-
-After the training the model should be persisted with `pickle` as `model.pkl`.   
+The last step is to persist fitted model with `pickle` as `model.pkl`.   
 
 The output might look like this:
 
