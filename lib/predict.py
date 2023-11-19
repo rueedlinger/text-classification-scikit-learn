@@ -32,7 +32,7 @@ def predict(model):
 
     print("---")
     end = time.perf_counter()
-    print(f"prediction toke {end - start:0.4f} seconds")
+    print(f"prediction took {end - start:0.4f} seconds")
 
 
 if __name__ == "__main__":

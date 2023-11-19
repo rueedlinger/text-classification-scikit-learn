@@ -177,6 +177,6 @@ Hello my name is max.
 ('de', 0.06591166352939336)
 ('es', 0.05989906412168451)
 ---
-prediction toke 0.0087 seconds
+prediction took 0.0087 seconds
 ```
 
